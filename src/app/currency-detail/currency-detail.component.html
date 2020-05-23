@@ -1,0 +1,13 @@
+<h1>History of rates for a single currency</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <input type="date" class="form-control" id="baseDatestart" name="baseDate" [ngModel]="baseDateStart | date:'yyyy-MM-dd'" (ngModelChange)="baseDateStart = $event" (change)="Reload()"/>
+        <input type="date" class="form-control" id="baseDatesend" name="baseDate" [ngModel]="baseDateEnd | date:'yyyy-MM-dd'" (ngModelChange)="baseDateEnd = $event" (change)="Reload()"/>
+    </div>
+  <div class="col-md-2">
+      <select class="form-control"  id="baseCurrency" name="baseCurrency" [(ngModel)] = 'baseCurrency' (change)="Reload()">
+          <option selected="{{currency===baseCurrency}}" *ngFor='let currency of allCurrencies' value="{{currency}}">{{currency}}</option>
+      </select>
+  </div>
+</div>

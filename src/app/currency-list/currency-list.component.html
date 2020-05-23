@@ -1,0 +1,47 @@
+<h1>All latest currency rates</h1>
+
+  <div *ngIf='baseDate && baseCurrency' class="row">
+    <div class="col-md-4">
+        <input type="date" class="form-control" id="baseDate" name="baseDate" [ngModel]="baseDate | date:'yyyy-MM-dd'" (ngModelChange)="baseDate = $event" (change)="Reload()"/>
+    </div>
+    <div class="col-md-2">
+        <select class="form-control"  id="baseCurrency" name="baseCurrency" [(ngModel)] = 'baseCurrency' (change)="Reload()">
+            <option selected="{{currency===baseCurrency}}" *ngFor='let currency of allCurrencies' value="{{currency}}">{{currency}}</option>
+        </select>
+    </div>
+</div>
+
+  <div *ngIf='currencyRate'>
+    Date {{currencyRate.date}}
+    Base currency {{currencyRate.base}}
+  </div>
+
+  <div class='card'>
+    <div *ngIf="loading" class='card-header'>
+      Loading
+    </div>
+
+  <div *ngIf="loading!==true" class='table-responsive'>
+    <table class='table'
+           *ngIf='currencyRate && currencyRate.rates && currencyRate.rates.length > 0'>
+      <thead>
+        <tr>
+        <th>Name</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let rate of currencyRate.rates'>
+          <td><a [routerLink]="['/currency-detail', rate.CurrencyName]">{{ rate.CurrencyName }}</a></td>
+          <td>{{rate.Rate}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div *ngIf='errorMessage'
+class='alert alert-danger'>
+Error: {{ errorMessage }}
+</div>
