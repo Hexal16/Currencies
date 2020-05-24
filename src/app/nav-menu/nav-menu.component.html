@@ -1,11 +1,16 @@
-<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-  <div class="container">
-      <a class="navbar-brand">Angular Router</a>
-      <ul class="nav navbar-nav" routerLinkActive="active">
-          <li class="nav-item"><a class="nav-link" routerLink="/">Latest rates</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/currency-detail/EUR">Currency history</a></li>
-      </ul>
-  </div>
-</nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<router-outlet></router-outlet>
+      <div class="collapse navbar-collapse" id="navbarsExample03">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Latest currency rates<span class="sr-only">Latest currency rates</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/currency-detail/EUR">Rate history</a>
+          </li>
+        </ul>
+      </div>
+    </nav>

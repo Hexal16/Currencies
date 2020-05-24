@@ -1,4 +1,9 @@
-<h1>All latest currency rates</h1>
+<h2>All latest currency rates</h2>
+
+<div *ngIf='currencyRate' class="row">
+  <div class="col-md-2">Date {{currencyRate.date}}</div>
+  <div class="col-md-2">Base currency {{currencyRate.base}}</div>
+</div>
 
   <div *ngIf='baseDate && baseCurrency' class="row">
     <div class="col-md-4">
@@ -11,10 +16,6 @@
     </div>
 </div>
 
-  <div *ngIf='currencyRate'>
-    Date {{currencyRate.date}}
-    Base currency {{currencyRate.base}}
-  </div>
 
   <div class='card'>
     <div *ngIf="loading" class='card-header'>

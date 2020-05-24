@@ -1,5 +1,9 @@
 <h1>History of rates for a single currency</h1>
 
+<div *ngIf='errorMessage'
+class='alert alert-danger'>
+Error: {{ errorMessage }}
+</div>
 <div class="row">
     <div class="col-md-4">
         <input type="date" class="form-control" id="baseDatestart" name="baseDate" [ngModel]="baseDateStart | date:'yyyy-MM-dd'" (ngModelChange)="baseDateStart = $event" (change)="Reload()"/>
@@ -10,4 +14,33 @@
           <option selected="{{currency===baseCurrency}}" *ngFor='let currency of allCurrencies' value="{{currency}}">{{currency}}</option>
       </select>
   </div>
+</div>
+<div class="row">
+    <div class='card'>
+        <div *ngIf="loading" class='card-header'>
+          Loading..
+        </div>
+    
+      <div *ngIf="loading!==true" class='table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+                <th>Date</th>
+                <th>Currency</th>
+                <th>Rate</th>
+            </tr>
+          </thead>
+          <tbody  *ngIf='historicalCurrencies && historicalCurrencies.length > 0'> 
+            <div *ngFor='let rate of historicalCurrencies'>
+                <tr *ngFor='let r of rate.rates'>
+                    <td>{{rate.date | date:'yyyy-MM-dd'}}</td>
+                    <td><a [routerLink]="['/currency-detail', r.CurrencyName]">{{ r.CurrencyName }}</a></td>
+                    <td>{{r.Rate}}</td>
+                </tr>
+            </div>
+          </tbody>
+        </table>
+      </div>
+    
+    </div>
 </div>

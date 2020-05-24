@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { DataService } from '../data.service';
+import { IHistoricalCurrencyRate } from '../Interfaces/ihistorical-currency-rate';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-currency-detail',
@@ -10,12 +12,13 @@ import { DataService } from '../data.service';
 export class CurrencyDetailComponent implements OnInit {
 
   baseCurrency:string;
-  baseDateStart:Date =new Date();
+  baseDateStart:Date =new Date(2020,4,4);
   baseDateEnd:Date =new Date();
+  historicalCurrencies: IHistoricalCurrencyRate[];
   allCurrencies:string[];
   loading:boolean=true;
   errorMessage:string;
-  constructor(private route:ActivatedRoute, private _dataService:DataService) { }
+  constructor(private route:ActivatedRoute, private _dataService:DataService, public datepipe: DatePipe) { }
 
   ngOnInit() {
     this.baseCurrency = this.route.snapshot.paramMap.get('baseCurrencyName');
@@ -41,10 +44,21 @@ export class CurrencyDetailComponent implements OnInit {
         }
       },
       error:err=>{
-        this.errorMessage = 'Cannot load currencies, ' + err
+        this.errorMessage = 'Cannot load currencies, ' + err.Message
       }
 
     });
+
+    this._dataService.GetHistoricalRates(this.datepipe.transform(this.baseDateStart, 'yyyy-MM-dd'), this.datepipe.transform(this.baseDateEnd, 'yyyy-MM-dd'), this.baseCurrency).subscribe({
+      next:currencies=>{
+        this.historicalCurrencies = currencies
+        this.loading = false
+      },
+      error:err=>{
+        this.errorMessage = 'Cannot load historical rates ' + err.Message
+        this.loading = false;
+      }
+    })
   }
 
 }
