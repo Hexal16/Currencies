@@ -7,6 +7,9 @@ There are 2 big sets of the page:
 * Detailed info about single currency
     * Shows history of currency rates against base(by default EUR) currencies
     * When loading rates for several years, you might need to wait a few seconds
+
+Note : Forgot to test this on IE earlier and it does not work very well. Some more adjustments would be needed to run this app correctlly on IE
+(Datepickeris faulty in IE)
     
 ## Running the Project Locally (Sorry, failed to set up docker)
 

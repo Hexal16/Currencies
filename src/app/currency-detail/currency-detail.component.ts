@@ -116,7 +116,6 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
     this.fitleredHistoricalCurrencies.forEach((rate:IHistoricalCurrencyRate) =>
       rate.rates = rate.rates.filter((r:IRate) => this.selectedItems.findIndex(si=>si['item_text'] === r.CurrencyName ) > -1 )
     )
-    this.fitleredHistoricalCurrencies= this.fitleredHistoricalCurrencies.sort(a => a.date.getTime()).reverse();
   }
 
   // Makes sure url represents which currency is set as base
