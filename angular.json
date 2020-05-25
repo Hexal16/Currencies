@@ -27,6 +27,7 @@
               "src/styles.css"
             ],
             "scripts": [
+              "./node_modules/mdbootstrap/js/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },

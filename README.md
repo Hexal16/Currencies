@@ -1,27 +1,34 @@
-# HomeWork
+# Homework for Angular front-end developer position
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
+Main technologies used
 
-## Development server
+    - Angular 9
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+    - Bootstrap 4
 
-## Code scaffolding
+There are 2 big sets of the page:
+* List of all currencies
+    * Get list of all currencies by given period(by default latest) and their rate agains base currency(by default EUR)   
+* Detailed info about single currency
+    * Shows history of currency rates against base(by default EUR) currencies
+    * When loading rates for several years, you might need to wait a few seconds
+    
+## Running the Project Locally (Sorry, failed to set up docker)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Install npm `https://nodejs.org/en/`
 
-## Build
+2. Download code from  ``
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+3. Open powershell in root folder
 
-## Running unit tests
+4. Install the Angular CLI
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    Run `npm install -g @angular/cli`
 
-## Running end-to-end tests
+5. Install project dependencies
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+    Run `npm install` at the root of this project
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+6. Start project locally 
+    
+    Run `ng serve -o`

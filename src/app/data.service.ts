@@ -36,7 +36,7 @@ export class DataService {
             date:data.date
           }
         },
-        error => console.log('Could not load data from latestRatesUrl, ' + error)
+        error => console.log('Could not load data from latestRatesUrl, ' + error.message)
       )
     );
   }
@@ -45,7 +45,6 @@ export class DataService {
   {
     let historicalRatesUrl:string = `${this.ApiUrl}history?start_at=${startDate}&end_at=${endDate}`;
     if(baseCurrency !== '') historicalRatesUrl += `&base=${baseCurrency}`;
-    console.log('calling api address ' + historicalRatesUrl);
     return this.http.get<any>(historicalRatesUrl)
     .pipe(
       map(
@@ -62,7 +61,7 @@ export class DataService {
             }
         })
         },
-        error => console.log('Sorry, all broke down ' + error)
+        error => console.log('Sorry, all broke down ' + error.message)
       )
     );
   }
@@ -74,7 +73,14 @@ export class DataService {
     .pipe(map((data) => {
         return Object.keys(data['rates'])
     }));
+  }
 
+  wait(ms:number){
+    let start = new Date().getTime();
+   let end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
   }
 
 }

@@ -1,33 +1,30 @@
-<h2>All latest currency rates</h2>
-
-<div *ngIf='currencyRate' class="row">
-  <div class="col-md-2">Date {{currencyRate.date}}</div>
-  <div class="col-md-2">Base currency {{currencyRate.base}}</div>
-</div>
-
-  <div *ngIf='baseDate && baseCurrency' class="row">
+<h4>All latest currency rates</h4>
+<app-info-card [warningMessage]='warningMessage' [errorMessage]='errorMessage'></app-info-card>
+  <div class="row justify-content-center">
+    <label for="baseDate">Date</label>
     <div class="col-md-4">
         <input type="date" class="form-control" id="baseDate" name="baseDate" [ngModel]="baseDate | date:'yyyy-MM-dd'" (ngModelChange)="baseDate = $event" (change)="Reload()"/>
     </div>
+    <label for="baseCurrency">Base</label>
+
     <div class="col-md-2">
         <select class="form-control"  id="baseCurrency" name="baseCurrency" [(ngModel)] = 'baseCurrency' (change)="Reload()">
-            <option selected="{{currency===baseCurrency}}" *ngFor='let currency of allCurrencies' value="{{currency}}">{{currency}}</option>
+            <option  *ngFor='let currency of allCurrencies' value="{{currency}}">{{currency}}</option>
         </select>
     </div>
 </div>
-
 
   <div class='card'>
     <div *ngIf="loading" class='card-header'>
       Loading
     </div>
 
-  <div *ngIf="loading!==true" class='table-responsive'>
-    <table class='table'
+  <div *ngIf="loading!==true" class='table-responsive table-responsive justify-content-center'>
+    <table class='table table-striped table-bordered'
            *ngIf='currencyRate && currencyRate.rates && currencyRate.rates.length > 0'>
       <thead>
         <tr>
-        <th>Name</th>
+          <th>Name</th>
           <th>Rate</th>
         </tr>
       </thead>
@@ -40,9 +37,4 @@
     </table>
   </div>
 
-</div>
-
-<div *ngIf='errorMessage'
-class='alert alert-danger'>
-Error: {{ errorMessage }}
 </div>

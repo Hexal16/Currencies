@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../data.service';
 import { ICurrencyRate } from '../Interfaces/ICurrency-rate';
-import { Subscription } from 'rxjs';
-import { ignoreElements } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
-import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
-
+import { Subscription } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-currency-list',
   templateUrl: './currency-list.component.html',
@@ -15,44 +13,58 @@ export class CurrencyListComponent implements OnInit, OnDestroy {
 
   allCurrencies:string[]
   baseCurrency:string = 'EUR';
-  baseDate:Date = new Date();
+  baseDate:Date;
   currencyRate:ICurrencyRate;
   loading : boolean = true;
   errorMessage : string;
+  warningMessage : string;
   ratesSubscription:Subscription;
-  constructor(private _dataService:DataService, public datepipe: DatePipe) { }
+  currenciesSubsciption:Subscription;
+
+  constructor(private _dataService:DataService, public datepipe: DatePipe) { 
+  }
 
   ngOnInit() {
-    this.Reload();
-  }
-
-  ngOnDestroy(): void {
-    this.ratesSubscription.unsubscribe();
-  }
-
-  Reload()
-  {
-    this.loading = true;
-    this._dataService.GetCurrencies().subscribe({
+    this.currenciesSubsciption = this.currenciesSubsciption = this._dataService.GetCurrencies().subscribe({
       next:currencies=>{
         this.allCurrencies =currencies;
         // THis API is fun, when base currency is EUR, it is not provided in list of currencies, otherwise base currency IS in the list
         // Lets add it at least in the selection
-        if(this.allCurrencies.indexOf(this.baseCurrency) === -1)
-        {
-          this.allCurrencies.push(this.baseCurrency);
-        }
+        if(this.allCurrencies.indexOf('EUR') === -1){this.allCurrencies.push('EUR');}
       },
       error:err=>{
         this.errorMessage = 'Cannot load currencies, ' + err
       }
 
     });
+    this.Reload();
+  }
 
-    this.ratesSubscription = this._dataService.GetRates(this.baseCurrency, this.datepipe.transform(this.baseDate, 'yyyy-MM-dd')).subscribe({
+  ngOnDestroy(): void {
+    if(this.ratesSubscription) this.ratesSubscription.unsubscribe();
+    if(this.currenciesSubsciption) this.currenciesSubsciption.unsubscribe();
+  }
+
+  Reload()
+  {
+    if(this.ratesSubscription) this.ratesSubscription.unsubscribe();
+    this.errorMessage = this.warningMessage = '';
+    this.loading = true;
+    let date: string = 'latest';
+    if(this.baseDate !== undefined)
+    {
+      date = this.datepipe.transform(this.baseDate, 'yyyy-MM-dd')
+    }
+
+    this.ratesSubscription = this._dataService.GetRates(this.baseCurrency, date).subscribe({
       next: currencyRate => {
-        console.log('We got here ' + this.baseCurrency);
         this.currencyRate  = currencyRate;
+        if(this.baseDate !== undefined && this.baseDate !== currencyRate.date)
+        {
+            this.warningMessage = `Could not get rates for ${this.baseDate}, showing ${currencyRate.date} instead`
+        }
+        this.baseDate = currencyRate.date;
+        this.baseCurrency = currencyRate.base
         this.loading = false;
       },
       error: err => {

@@ -1,0 +1,9 @@
+  project:
+    image: homework
+    build:
+      context: .
+      dockerfile: /
+    volumes:
+    - ./projectdir:/
+    ports:
+    - 4200:4200

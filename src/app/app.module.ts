@@ -10,21 +10,29 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { CurrencyDetailElementComponent } from './currency-detail/currency-detail-element/currency-detail-element.component';
+import { InfoCardComponent } from './shared/info-card/info-card.component';
+import { SortableDirective } from './shared/sortable.directive';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurrencyListComponent,
     CurrencyDetailComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    CurrencyDetailElementComponent,
+    InfoCardComponent,
+    SortableDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule, //TODO : use this
     HttpClientModule,
     FormsModule,
+    NgMultiSelectDropDownModule,
     RouterModule.forRoot([
-      { path: '', component: CurrencyListComponent, pathMatch: 'full' },
+      { path: '', component: CurrencyListComponent, pathMatch: 'full', data:{preload:false} },
       { path: 'currency-detail/:baseCurrencyName', component: CurrencyDetailComponent, pathMatch: 'full' },
       { path: 'currency-detail/', component: CurrencyDetailComponent, pathMatch: 'full' },
     ])
