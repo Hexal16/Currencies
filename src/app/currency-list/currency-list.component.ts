@@ -3,7 +3,6 @@ import { DataService } from '../data.service';
 import { ICurrencyRate } from '../Interfaces/ICurrency-rate';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-currency-list',
   templateUrl: './currency-list.component.html',
@@ -20,6 +19,7 @@ export class CurrencyListComponent implements OnInit, OnDestroy {
   warningMessage : string;
   ratesSubscription:Subscription;
   currenciesSubsciption:Subscription;
+  minDate:string = new Date(1999,4,1).toJSON().split('T')[0];
 
   constructor(private _dataService:DataService, public datepipe: DatePipe) { 
   }
@@ -27,15 +27,11 @@ export class CurrencyListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currenciesSubsciption = this.currenciesSubsciption = this._dataService.GetCurrencies().subscribe({
       next:currencies=>{
-        this.allCurrencies =currencies;
-        // THis API is fun, when base currency is EUR, it is not provided in list of currencies, otherwise base currency IS in the list
-        // Lets add it at least in the selection
-        if(this.allCurrencies.indexOf('EUR') === -1){this.allCurrencies.push('EUR');}
+        this.allCurrencies = currencies;
       },
       error:err=>{
         this.errorMessage = 'Cannot load currencies, ' + err
       }
-
     });
     this.Reload();
   }

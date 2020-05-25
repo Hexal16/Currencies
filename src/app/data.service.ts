@@ -3,7 +3,6 @@ import { ICurrencyRate } from './Interfaces/ICurrency-rate';
 import { Observable } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http'
-import { IRate } from './Interfaces/IRate';
 import { IHistoricalCurrencyRate } from './Interfaces/ihistorical-currency-rate';
 
 @Injectable({
@@ -36,7 +35,9 @@ export class DataService {
             date:data.date
           }
         },
-        error => console.log('Could not load data from latestRatesUrl, ' + error.message)
+        (error: { message: string; }) => {
+          return console.log('GetRates() failed ' + error.message);
+        }
       )
     );
   }
@@ -61,7 +62,9 @@ export class DataService {
             }
         })
         },
-        error => console.log('Sorry, all broke down ' + error.message)
+        (error: { message: string; }) => {
+          return console.log('GetHistoricalRates() ' + error.message);
+        }
       )
     );
   }
@@ -71,16 +74,13 @@ export class DataService {
     let latestRatesUrl: string=this.ApiUrl+'latest';
     return this.http.get<any>(latestRatesUrl)
     .pipe(map((data) => {
-        return Object.keys(data['rates'])
+        let allRates= Object.keys(data['rates']);
+        // Idk why but EUR is always excluded. Other currencies are always shown. So I put back EUR
+        if(allRates.indexOf('EUR') === -1)
+        {
+          allRates.push('EUR');
+        }
+        return allRates;
     }));
   }
-
-  wait(ms:number){
-    let start = new Date().getTime();
-   let end = start;
-   while(end < start + ms) {
-     end = new Date().getTime();
-  }
-  }
-
 }

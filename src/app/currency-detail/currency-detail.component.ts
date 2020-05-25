@@ -5,9 +5,7 @@ import { IHistoricalCurrencyRate } from '../Interfaces/ihistorical-currency-rate
 import { DatePipe } from '@angular/common';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Subscription, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { IRate } from '../Interfaces/IRate';
-
 
 @Component({
   selector: 'app-currency-detail',
@@ -35,8 +33,8 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings:IDropdownSettings = {};
-  protected ngUnsubscribe: Subject<void> = new Subject<void>();
-  constructor(private route:ActivatedRoute, private router:Router, private _dataService:DataService, public datepipe: DatePipe) { }
+  constructor(private route:ActivatedRoute, private router:Router, private _dataService:DataService, public datepipe: DatePipe) {
+  }
 
   ngOnInit() {
     this.baseCurrency = this.route.snapshot.paramMap.get('baseCurrencyName');
@@ -46,10 +44,9 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
-      allowSearchFilter: true
+      allowSearchFilter: true,
+      enableCheckAll:true
     };
     this.Reload();
   }
@@ -57,8 +54,6 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
   // When unloading this view, stop the big subscription, to save memory
   StopLoading()
   {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
     this.fitleredHistoricalCurrencies = [];
     this.historicalCurrencies = [];
   }
@@ -88,12 +83,6 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
     this._dataService.GetCurrencies().subscribe({
       next:currencies=>{
         this.allCurrencies =currencies;
-        // Idk why but EUR is always excluded. Other currencies are always shown. So I put back EUR
-        if(this.allCurrencies.indexOf('EUR') === -1)
-        {
-          this.allCurrencies.push('EUR');
-        }
-
         // At start add ALL curencies and make them selected
         this.dropdownList = [];
         this.allCurrencies.forEach((element, index) => {
@@ -104,11 +93,9 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
       error:err=>{
         this.errorMessage = 'Cannot load currencies, ' + err
       }
-
     });
 
     this.ratesSubscription = this._dataService.GetHistoricalRates(this.datepipe.transform(this.baseDateStart, 'yyyy-MM-dd'), this.datepipe.transform(this.baseDateEnd, 'yyyy-MM-dd'), this.baseCurrency)
-    .pipe(takeUntil(this.ngUnsubscribe) )
     .subscribe({
       next:currencies=>{
         this.historicalCurrencies =  currencies.sort(a => a.date.getTime()).reverse();
@@ -124,11 +111,7 @@ export class CurrencyDetailComponent implements OnInit, OnDestroy {
 
   FilterResult()
   {
-    if(this.selectedItems.length == 0){
-      this.fitleredHistoricalCurrencies = [];
-      return;
-    }
- 
+    console.log('Should be ' + this.selectedItems.length)
     this.fitleredHistoricalCurrencies= JSON.parse(JSON.stringify(this.historicalCurrencies));
     this.fitleredHistoricalCurrencies.forEach((rate:IHistoricalCurrencyRate) =>
       rate.rates = rate.rates.filter((r:IRate) => this.selectedItems.findIndex(si=>si['item_text'] === r.CurrencyName ) > -1 )

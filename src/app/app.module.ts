@@ -30,12 +30,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AppRoutingModule, //TODO : use this
     HttpClientModule,
     FormsModule,
-    NgMultiSelectDropDownModule,
-    RouterModule.forRoot([
-      { path: '', component: CurrencyListComponent, pathMatch: 'full', data:{preload:false} },
-      { path: 'currency-detail/:baseCurrencyName', component: CurrencyDetailComponent, pathMatch: 'full' },
-      { path: 'currency-detail/', component: CurrencyDetailComponent, pathMatch: 'full' },
-    ])
+    NgMultiSelectDropDownModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

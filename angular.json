@@ -24,11 +24,13 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/mdbootstrap/css/addons/datatables.min.css",
               "src/styles.css"
             ],
             "scripts": [
               "./node_modules/mdbootstrap/js/jquery.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/mdbootstrap/js/mdb.min.js"
             ]
           },
           "configurations": {
@@ -55,6 +57,9 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "es5": {
+              "tsConfig": "./src/tsconfig-es5.app.json"
             }
           }
         },
