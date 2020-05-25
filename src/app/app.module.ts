@@ -7,12 +7,10 @@ import { AppComponent } from './app.component';
 import { CurrencyListComponent } from './currency-list/currency-list.component';
 import { CurrencyDetailComponent } from './currency-detail/currency-detail.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { CurrencyDetailElementComponent } from './currency-detail/currency-detail-element/currency-detail-element.component';
 import { InfoCardComponent } from './shared/info-card/info-card.component';
-import { SortableDirective } from './shared/sortable.directive';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
@@ -22,12 +20,11 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CurrencyDetailComponent,
     NavMenuComponent,
     CurrencyDetailElementComponent,
-    InfoCardComponent,
-    SortableDirective
+    InfoCardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, //TODO : use this
+    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     NgMultiSelectDropDownModule
